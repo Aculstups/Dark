@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>United Islands Darknet</title>
+    <style>
+        body {
+            font-family: monospace;
+            background-color: #000;
+            color: #0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .bg-hacker-screen {
+            background-image: 
+                linear-gradient(rgba(0, 255, 0, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 0, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .login-form {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 5px;
+        }
+        input, button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #333;
+            border: none;
+            color: #0f0;
+        }
+        button {
+            background-color: #0f0;
+            color: #000;
+            cursor: pointer;
+        }
+        .hidden {
+            display: none;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #111;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+        }
+        .main-content {
+            margin-left: 220px;
+            padding: 20px;
+        }
+        .chat-container {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #0f0;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-screen" class="bg-hacker-screen">
+        <div class="container">
+            <div class="login-form">
+                <h2>United Islands Darknet - Login</h2>
+                <input type="text" id="username" placeholder="Benutzername">
+                <input type="tel" id="phone" placeholder="Telefonnummer">
+                <input type="password" id="password" placeholder="Passwort">
+                <button onclick="login()">Anmelden</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-app" class="hidden">
+        <div class="sidebar">
+            <h3>United Islands Darknet</h3>
+            <button onclick="showSection('public-chat')">Öffentlicher Chat</button>
+            <button onclick="showSection('private-chat')">Privater Chat</button>
+            <button onclick="showSection('market')">Markt</button>
+            <button onclick="showSection('other-shops')">Andere Shops</button>
+            <button onclick="showSection('requests')">Anfragen</button>
+            <button id="admin-button" onclick="showSection('admin')" class="hidden">Admin Panel</button>
+        </div>
+
+        <div class="main-content">
+            <div id="public-chat" class="section">
+                <h2>Öffentlicher Chat</h2>
+                <div class="chat-container" id="public-chat-messages"></div>
+                <input type="text" id="public-chat-input" placeholder="Nachricht eingeben">
+                <button onclick="sendPublicMessage()">Senden</button>
+            </div>
+
+            <div id="private-chat" class="section hidden">
+                <h2>Privater Chat</h2>
+                <input type="text" id="recipient" placeholder="Empfänger (Anonym ID)">
+                <div class="chat-container" id="private-chat-messages"></div>
+                <input type="text" id="private-chat-input" placeholder="Nachricht eingeben">
+                <button onclick="sendPrivateMessage()">Senden</button>
+            </div>
+
+            <div id="market" class="section hidden">
+                <h2>Markt</h2>
+                <p>Hier werden Produkte angezeigt.</p>
+            </div>
+
+            <div id="other-shops" class="section hidden">
+                <h2>Andere Shops</h2>
+                <p>Hier werden andere Shops angezeigt.</p>
+            </div>
+
+            <div id="requests" class="section hidden">
+                <h2>Anfragen</h2>
+                <p>Hier können Anfragen gestellt werden.</p>
+            </div>
+
+            <div id="admin" class="section hidden">
+                <h2>Admin Panel</h2>
+                <p>Nur für Administratoren zugänglich.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+
+            if (username === 'Admin' && phone === '17938/00000' && password === 'MLesN,!mTs,96') {
+                currentUser = { name: 'Admin', isAdmin: true, anonymousId: 'Admin' };
+                document.getElementById('admin-button').classList.remove('hidden');
+            } else {
+                currentUser = { name: username, isAdmin: false, anonymousId: 'Anonym' + Math.floor(Math.random() * 10000) };
+            }
+
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('hidden');
+            showSection('public-chat');
+        }
+
+        function showSection(sectionId) {
+            const sections = document.getElementsByClassName('section');
+            for (let section of sections) {
+                section.classList.add('hidden');
+            }
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        function sendPublicMessage() {
+            const input = document.getElementById('public-chat-input');
+            const message = input.value;
+            if (message) {
+                const chatContainer = document.getElementById('public-chat-messages');
+                chatContainer.innerHTML += `<p><strong>${currentUser.anonymousId}:</strong> ${message}</p>`;
+                input.value = '';
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+        }
+
+        function sendPrivateMessage() {
+            const input = document.getElementById('private-chat-input');
+            const recipient = document.getElementById('recipient').value;
+            const message = input.value;
+            if (message && recipient) {
+                const chatContainer = document.getElementById('private-chat-messages');
+                chatContainer.innerHTML += `<p><strong>An ${recipient}:</strong> ${message}</p>`;
+                input.value = '';
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>
+
