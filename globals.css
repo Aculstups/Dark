@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 255, 0;
+  --background-rgb: 0, 0, 0;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+}
+
+.bg-hacker-screen {
+  background-color: #000;
+  background-image: url("https://i.postimg.cc/g0CMrf2S/1000-F-248522792-Xx-OSm-Pur-XOVB49k7-In8-Fr-LTjjb-OJTUtq.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  position: relative;
+}
+
+.bg-hacker-screen::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.login-form {
+  position: relative;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid #0f0;
+  width: 300px;
+}
+
+input,
+textarea,
+select {
+  background-color: #000;
+  color: #0f0;
+  border: 1px solid #0f0;
+}
+
+button {
+  background-color: #000;
+  color: #0f0;
+  border: 1px solid #0f0;
+}
+
+button:hover {
+  background-color: #0f0;
+  color: #000;
+}
+
+.chat-messages {
+  height: 400px;
+  overflow-y: auto;
+  border: 1px solid #0f0;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #000;
+}
+
+.tab-button {
+  background-color: #000;
+  color: #0f0;
+  border: 1px solid #0f0;
+}
+
+.tab-button.active {
+  background-color: #0f0;
+  color: #000;
+}
+
